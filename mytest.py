@@ -1,4 +1,7 @@
 import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter.filedialog import askopenfile
 
 # Create the main window
 window = tk.Tk()
@@ -9,7 +12,7 @@ window.configure(bg='#444544')
 # Create the Receiver List field
 receiver_label = tk.Label(text="Receiver List (CSV):")
 receiver_label.config(font=("Arial 10 bold" ),bg="#444544",fg="white")
-receiver_entry = tk.Entry()
+receiver_entry = tk.Entry(textvariable="")
 receiver_entry.config(font=("Arial 10 " ),bg="#525251",fg="white")
 
 # Create the Message field
@@ -47,7 +50,8 @@ submit_button = tk.Button(text="Submit")
 submit_button.config(font=("Arial 10 bold" ),bg="#046204",fg="white")
 
 # Create the browse button
-browse_button = tk.Button(text="Browse")
+browse_button = tk.Button(window, text='Browse File', 
+   width=20,command = lambda:upload_file())
 browse_button.config(font=("Arial 10 bold" ),bg="#046204",fg="white")
 
 # Place the widgets in the window
@@ -65,6 +69,12 @@ msg_form_entry.grid(row=4 , column=1, padx=5 , pady=5)
 delay_label.grid(row=5 , column=0, padx=5 , pady=5)
 delay_entry.grid(row=5 , column=1, padx=5 , pady=5)
 submit_button.grid(row=6,column=0, padx=5 , pady=5)
+fob=0
+def upload_file():
+    file = filedialog.askopenfilename()
+    fob=open(file,'r')
+    print(fob.name)
+    receiver_label.config(textvariable=fob.name)
 
 # Run the Tkinter event loop
 window.mainloop()
