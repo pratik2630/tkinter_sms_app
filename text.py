@@ -38,6 +38,7 @@ def get_data():
     new_secret = secret_entry.get()
     From = msg_form_entry.get()
     msg_delay = delay_entry.get()
+    country_code = country_code_entry.get()
     print("list:",num_list," msg:",msg," key:",new_key," secret:",new_secret,"From:",From,"msg_delay:",msg_delay)
 
     file = open(num_list,"r")
@@ -50,6 +51,8 @@ def get_data():
         return result
     
     converted_num_list = []
+
+    print(len(converted_num_list))
     
     
     for i in range(len(phone_numbers)):
@@ -72,9 +75,9 @@ def get_data():
     #function for sending message
     def Text_SMS(num, msg):
         time.sleep(int(msg_delay))
-        var1 = "91"
+        var1 = country_code
         num_new = "".join([var1, num])
-        print(num_new)
+        print("Numnew",num_new)
         print("========from textsms")
         responseData = sms.send_message({
             'from': From,
@@ -83,14 +86,19 @@ def get_data():
             'type': "unicode"
         })
 
-        print(num)
+        
         if responseData["messages"][0]["status"] == "0":
-            print("Message sent successfully to",num)
+            print("Message sent successfully to",num_new)
         else:
             error = responseData['messages'][0]['error-text']
             print(f"Message failed with error:",error)
             new_label.config(text = error)
-
+    n3 = "/"
+    n4= "Total contact no:"
+    n2 = str(len(converted_num_list))
+    n1 = n4+n2+n3+n2
+    # total_num = "".join([var1, converted_num_list])
+    total_num_label.config(text = n1 )
         # time.sleep(int(msg_delay))
     
     client = vonage.Client(key= new_key, secret= new_secret)
@@ -120,7 +128,7 @@ def browsefunc():
 
 # Create the main window
 window = tk.Tk()
-window.geometry("800x600")
+window.geometry("850x650")
 window.title("Bulk SMS")
 window.configure(bg='#444544')
 
@@ -194,6 +202,15 @@ country_code_label.config(font=("Arial 12 bold" ),bg="#444544",fg="white")
 country_code_entry = tk.Entry()
 country_code_entry.config(font=("Arial 12 " ),bg="#525251",fg="white")
 
+
+#total number of contacts
+total_num_label = tk.Label(text="")
+total_num_label.config(font=("Arial 12 bold" ),bg="#444544",fg="white")
+
+#headline
+header_label = tk.Label(text="Bulk SMS Sender")
+header_label.config(font=("Batang 25 bold" ),bg="#444544",fg="#3ef49c")
+
 # label=Label(window, text="" ,font=('Times 14'), width=20, height=15)
 my_list = Listbox(window,xscrollcommand = xscrollbar.set, yscrollcommand = yscrollbar.set, width = 20 , height=15)
 my_list.config(font=("Courier 13 " ),bg="#525251",fg="white")
@@ -212,32 +229,31 @@ load_button.config(font=("Arial 12 bold" ),bg="#046204",fg="white")
 
 
 # Place the widgets in the window
-receiver_label.place(relx=0.1, rely=0.1, anchor = NW)
-receiver_entry.place(relx=0.4, rely=0.1, anchor= NW)
-browse_button.place(relx=0.7, rely=0.1, anchor = NW)
-
-
-country_code_label.place(relx=0.1, rely=0.2, anchor = NW)
-country_code_entry.place(relx = 0.4, rely = 0.2, anchor = NW)
-
-
-message_label.place(relx=0.1, rely=0.3, anchor = NW)
-message_entry.place(relx = 0.4, rely = 0.3, anchor = NW)
-key_label.place(relx = 0.1, rely = 0.4, anchor = NW)
-key_entry.place(relx = 0.4, rely = 0.4, anchor = NW)
-secret_label.place(relx = 0.1, rely = 0.5, anchor = NW)
-secret_entry.place(relx = 0.4, rely = 0.5, anchor = NW)
-msg_form_label.place(relx = 0.1, rely = 0.6, anchor = NW)
-msg_form_entry.place(relx = 0.4, rely = 0.6, anchor = NW)
-delay_label.place(relx = 0.1, rely = 0.7, anchor = NW)
-delay_entry.place(relx = 0.4, rely = 0.7, anchor = NW)
-submit_button.place(relx = 0.5, rely = 0.8, anchor = NW)
-phone_label.place(relx=0.75,rely=0.2)
+header_label.place(relx=0.35, rely=0.03, anchor = NW)
+receiver_label.place(relx=0.1, rely=0.12, anchor = NW)
+receiver_entry.place(relx=0.4, rely=0.12, anchor= NW)
+browse_button.place(relx=0.7, rely=0.12, anchor = NW)
+country_code_label.place(relx=0.1, rely=0.22, anchor = NW)
+country_code_entry.place(relx = 0.4, rely = 0.22, anchor = NW)
+message_label.place(relx=0.1, rely=0.32, anchor = NW)
+message_entry.place(relx = 0.4, rely = 0.32, anchor = NW)
+key_label.place(relx = 0.1, rely = 0.42, anchor = NW)
+key_entry.place(relx = 0.4, rely = 0.42, anchor = NW)
+secret_label.place(relx = 0.1, rely = 0.52, anchor = NW)
+secret_entry.place(relx = 0.4, rely = 0.52, anchor = NW)
+msg_form_label.place(relx = 0.1, rely = 0.62, anchor = NW)
+msg_form_entry.place(relx = 0.4, rely = 0.62, anchor = NW)
+delay_label.place(relx = 0.1, rely = 0.72, anchor = NW)
+delay_entry.place(relx = 0.4, rely = 0.72, anchor = NW)
+save_button.place(relx=0.1,rely=0.82)
+load_button.place(relx=0.3,rely=0.82)
+submit_button.place(relx = 0.5, rely = 0.82, anchor = NW)
+total_num_label.place(relx = 0.7, rely = 0.82, anchor = NW)
+phone_label.place(relx=0.75,rely=0.22)
 # label.place(relx=0.7,rely=0.27)
-my_list.place(relx=0.7,rely=0.27)
+my_list.place(relx=0.7,rely=0.3)
 new_label.place(relx=0.1,rely=0.9)
-save_button.place(relx=0.1,rely=0.8)
-load_button.place(relx=0.3,rely=0.8)
+
 
 fob=0
 def upload_file():
